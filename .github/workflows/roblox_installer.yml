@@ -1,0 +1,36 @@
+name: Install Roblox & Package
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [install-roblox]
+
+jobs:
+  install_roblox:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Download Roblox Installer
+      run: Invoke-WebRequest -Uri "https://setup.rbxcdn.com/RobloxPlayerLauncher.exe" -OutFile "RobloxInstaller.exe"
+
+    - name: Install Roblox
+      run: Start-Process -FilePath ".\RobloxInstaller.exe" -ArgumentList "/silent" -NoNewWindow -Wait
+
+    - name: Create Shortcut
+      run: |
+        $ws = New-Object -ComObject WScript.Shell
+        $shortcut = $ws.CreateShortcut("$env:USERPROFILE\Desktop\Roblox.lnk")
+        $shortcut.TargetPath = "$env:LOCALAPPDATA\Roblox\Versions\*\RobloxPlayerBeta.exe"
+        $shortcut.Save()
+
+    - name: Package Files
+      run: Compress-Archive -Path "$env:LOCALAPPDATA\Roblox\Versions\*" -DestinationPath "RobloxSetup.zip"
+
+    - name: Upload ZIP
+      uses: actions/upload-artifact@v3
+      with:
+        name: roblox-setup
+        path: RobloxSetup.zip
