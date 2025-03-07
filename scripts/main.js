@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
             method: "POST",
             headers: {
                 "Accept": "application/vnd.github.v3+json",
-                "Authorization": `Bearer ${GITHUB_API_TOKEN}` // Secure authentication
+                "Authorization": `Bearer ${API}` // Secure authentication
             },
             body: JSON.stringify({ ref: "main" })
         })
