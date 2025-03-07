@@ -3,7 +3,7 @@ name: Install Roblox & Package
 on:
   workflow_dispatch:
   repository_dispatch:
-    types: [install-roblox]
+    types: [install-roblox]  # Allows frontend to trigger this
 
 jobs:
   install_roblox:
