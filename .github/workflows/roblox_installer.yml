@@ -17,7 +17,14 @@ jobs:
       run: Invoke-WebRequest -Uri "https://setup.rbxcdn.com/RobloxPlayerLauncher.exe" -OutFile "RobloxInstaller.exe"
 
     - name: Install Roblox
-      run: Start-Process -FilePath ".\RobloxInstaller.exe" -ArgumentList "/silent" -NoNewWindow -Wait
+      run: |
+        $process = Start-Process -FilePath ".\RobloxInstaller.exe" -ArgumentList "/silent" -NoNewWindow -Wait -PassThru
+        Start-Sleep -Seconds 300  # Wait for installation to complete
+        Stop-Process -Id $process.Id -Force  # Ensure the installer is closed
+
+    - name: Kill Any Remaining Installer Process (Failsafe)
+      run: |
+        taskkill /IM "RobloxInstaller.exe" /F || echo "No running installer found"
 
     - name: Create Shortcut
       run: |
