@@ -29,21 +29,23 @@ document.addEventListener("DOMContentLoaded", () => {
             ripple.remove();
         }, 600);
 
-        // Trigger Backend Request
-        fetch("https://api.github.com/repos/alexrR0987-arch/installer-rblx/actions/workflows/roblox_installer.yml/dispatches", {
+        // Trigger GitHub Actions Securely
+        fetch("https://api.github.com/repos/alexrR0987-arch/installer-rblx/dispatches", {
             method: "POST",
             headers: {
                 "Accept": "application/vnd.github.v3+json",
-                "Authorization": `Bearer ${API}` // Secure authentication
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify({ ref: "main" })
+            body: JSON.stringify({ event_type: "install-roblox" })
         })
         .then(response => {
             if (response.ok) {
-                alert("Roblox installation started. The ZIP file will be available soon.");
+                alert("Roblox installation started! The ZIP file will be available soon.");
             } else {
-                alert("Error starting installation.");
+                alert("Error starting installation. Check console for details.");
+                response.json().then(data => console.error("GitHub API Error:", data));
             }
-        });
+        })
+        .catch(error => console.error("Error Triggering Workflow:", error));
     });
 });
