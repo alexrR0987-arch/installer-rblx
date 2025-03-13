@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 600);
 
         // Trigger GitHub Actions Securely
-        fetch("https://api.github.com/repos/alexrR0987-arch/installer-rblx/actions/workflows/13725027232/runs/", {
+        fetch("https://api.github.com/repos/alexrR0987-arch/installer-rblx/actions/workflows/13725027232/runs/rerun", {
             method: "POST",
             headers: {
                 "Accept": "application/vnd.github.v3+json",
