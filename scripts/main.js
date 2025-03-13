@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
             method: "POST",
             headers: {
                 "Accept": "application/vnd.github.v3+json",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
                 "Authorization": 'token ${API}'
             },
             body: JSON.stringify({ event_type: "install-roblox" })
