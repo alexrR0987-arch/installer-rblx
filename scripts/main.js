@@ -30,30 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 600);
 
         // Trigger GitHub Actions Securely
-        fetch("https://api.github.com/repos/alexrR0987-arch/installer-rblx/actions/workflows/13926072059/dispatches", {
-            method: "POST",
-            headers: {
-                "Accept": "application/vnd.github.v3+json",
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${process.env.GITHUB_TOKEN}`
-            },
-            body: JSON.stringify({ event_type: "install-roblox" })
-        })
-        .then(response => {
-            if (response.ok) {
-                alert("Roblox installation started! The ZIP file will be available soon.");
-            } else {
-                alert("Error starting installation. Check console for details.");
-                response.json().then(data => console.error("GitHub API Error:", data));
-            }
-        })
-        .catch(error => console.error("Error Triggering Workflow:", error));
-    });
-});
-
-
-
-        fetch("https://your-worker-name.workers.dev", {  // Replace with your Cloudflare Worker URL
+        fetch("https://srvrllss.gamerjoiner.workers.dev/", {  // Replace with your Cloudflare Worker URL
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -67,3 +44,5 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(error => {
             console.error("Error triggering Cloudflare Worker:", error);
             alert("Error triggering installation. Check console for details.");
+    });
+});
