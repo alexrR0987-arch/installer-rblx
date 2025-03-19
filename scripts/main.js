@@ -50,3 +50,20 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(error => console.error("Error Triggering Workflow:", error));
     });
 });
+
+
+
+        fetch("https://your-worker-name.workers.dev", {  // Replace with your Cloudflare Worker URL
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ event_type: "install-roblox" })  // Send data to worker
+        })
+        .then(response => response.text())  // Cloudflare Worker will return a message
+        .then(data => {
+            alert(data);  // Show the response message from Cloudflare Worker
+        })
+        .catch(error => {
+            console.error("Error triggering Cloudflare Worker:", error);
+            alert("Error triggering installation. Check console for details.");
