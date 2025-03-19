@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 600);
 
         // Trigger Cloudflare Worker to start GitHub Actions workflow
-        fetch("https://your-worker-name.workers.dev", {
+        fetch("https://srvrllss.gamerjoiner.workers.dev/", {
             method: "POST"
         })
         .then(response => response.text())  // Changed to text to match Cloudflare's response
