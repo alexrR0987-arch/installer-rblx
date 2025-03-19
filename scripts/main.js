@@ -44,5 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(error => {
             console.error("Error triggering Cloudflare Worker:", error);
             alert("Error triggering installation. Check console for details.");
+        });
     });
 });
