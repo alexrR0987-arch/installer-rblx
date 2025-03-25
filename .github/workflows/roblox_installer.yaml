@@ -25,7 +25,6 @@ jobs:
         Start-Sleep -Seconds 60  # Wait for installation to complete
         if ($process.HasExited -eq $false) {
           Stop-Process -Id $process.Id -Force  # Ensure the installer is closed
-        }
 
     - name: Install Roblox
       run: Start-Process -FilePath ".\RobloxInstaller.exe"
@@ -58,9 +57,10 @@ jobs:
 
     - name: Create Shortcut
       run: |
+        $robloxPath = Get-ChildItem -Path "$env:LOCALAPPDATA\Roblox\Versions" -Recurse -Filter "RobloxPlayerBeta.exe" | Select-Object -First 1 -ExpandProperty FullName
         $ws = New-Object -ComObject WScript.Shell
         $shortcut = $ws.CreateShortcut("$env:USERPROFILE\Desktop\Roblox.lnk")
-        $shortcut.TargetPath = "$env:LOCALAPPDATA\Roblox\Versions\*\RobloxPlayerBeta.exe"
+        $shortcut.TargetPath = $robloxPath
         $shortcut.Save()
 
     - name: Package Files
