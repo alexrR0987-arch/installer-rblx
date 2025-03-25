@@ -17,6 +17,8 @@ jobs:
       run: Invoke-WebRequest -Uri "https://setup.rbxcdn.com/RobloxPlayerLauncher.exe" -OutFile "RobloxInstaller.exe"
 
     - name: Upload to GitHub Pages
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@github.com"
@@ -25,7 +27,8 @@ jobs:
         cd gh-pages
         git add RobloxInstaller.exe
         git commit -m "Add Roblox Installer"
-        git push
+        git push https://${GH_TOKEN}@github.com/${{ github.repository }} gh-pages
+
     - name: Provide Download Link
       run: |
         echo "Download the Roblox installer from: https://${{ github.repository_owner }}.github.io/${{ github.repository }}/RobloxInstaller.exe"
