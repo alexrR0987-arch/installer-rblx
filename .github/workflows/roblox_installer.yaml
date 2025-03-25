@@ -28,7 +28,6 @@ jobs:
         git add RobloxInstaller.exe
         git commit -m "Add Roblox Installer"
         git push https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }} gh-pages
-
     - name: Provide Download Link
       run: |
         echo "Download the Roblox installer from: https://${{ github.repository_owner }}.github.io/${{ github.repository }}/RobloxInstaller.exe"
