@@ -3,7 +3,7 @@ name: Download Roblox Installer
 on:
   workflow_dispatch:
   repository_dispatch:
-    types: [install-roblox]  # Allows frontend to trigger this
+    types: [install-roblox]
 
 jobs:
   download_roblox_installer:
@@ -24,3 +24,13 @@ jobs:
 
     - name: Provide Download Link
       run: echo "Download the Roblox installer from the Artifacts section in the Actions tab."
+
+    - name: Prompt User for Download
+      run: |
+        $response = Read-Host "Do you want to download the Roblox Installer? (yes/no)"
+        if ($response -eq "yes") {
+          Invoke-WebRequest -Uri "https://setup.rbxcdn.com/RobloxPlayerLauncher.exe" -OutFile "RobloxInstaller.exe"
+          Write-Host "Roblox Installer has been downloaded."
+        } else {
+          Write-Host "Download cancelled by user."
+        }
