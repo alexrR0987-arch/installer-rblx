@@ -1,82 +1,23 @@
-name: Install Roblox & Package
+name: Download Roblox Installer
 
 on:
   workflow_dispatch:
   repository_dispatch:
     types: [install-roblox]  # Allows frontend to trigger this
+
 jobs:
-  install_roblox:
+  download_roblox_installer:
     runs-on: windows-latest
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v3
+
     - name: Download Roblox Installer
       run: Invoke-WebRequest -Uri "https://setup.rbxcdn.com/RobloxPlayerLauncher.exe" -OutFile "RobloxInstaller.exe"
 
-    - name: Download AutoHotkey Installer
-      run: Invoke-WebRequest -Uri "https://github.com/AutoHotkey/AutoHotkey/releases/download/v1.1.33.10/AutoHotkey_1.1.33.10_setup.exe" -OutFile "AutoHotkeyInstaller.exe"
-
-    - name: Install AutoHotkey
-      run: |
-        $process = Start-Process -FilePath ".\AutoHotkeyInstaller.exe" -ArgumentList "/S" -NoNewWindow -Wait -PassThru
-        Start-Sleep -Seconds 60  # Wait for installation to complete
-        if ($process.HasExited -eq $false) {
-          Stop-Process -Id $process.Id -Force  # Ensure the installer is closed
-        }
-
-    - name: Install Roblox
-      run: Start-Process -FilePath ".\RobloxInstaller.exe"
-
-    - name: Wait for Roblox Installation
-      run: |
-        Add-Content -Path "wait_for_install.ahk" -Value '
-        Loop {
-            Sleep, 1000
-            FileAppend, Checking for Roblox window...`n, wait_for_install.log
-            IfWinExist, Roblox
-            {
-                FileAppend, Roblox window found.`n, wait_for_install.log
-                WinGetText, text, Roblox
-                IfInString, text, ROBLOX IS SUCCESSFULLY INSTALLED
-                {
-                    FileAppend, "ROBLOX IS SUCCESSFULLY INSTALLED" text found.`n, wait_for_install.log
-                    ExitApp
-                }
-            }
-        }'
-        Start-Process -FilePath "C:\Program Files\AutoHotkey\AutoHotkey.exe" -ArgumentList "wait_for_install.ahk" -NoNewWindow -Wait
-
-    - name: Check Installation Log
-      run: Get-Content -Path "wait_for_install.log"
-
-    - name: Kill Any Remaining Installer Process (Failsafe)
-      run: |
-        taskkill /IM "RobloxInstaller.exe" /F || echo "No running installer found"
-
-    - name: Verify Roblox Installation Directory
-      run: |
-        $robloxDir = Get-ChildItem -Path "$env:LOCALAPPDATA\Roblox" -Recurse -Directory | Where-Object { $_.Name -match "Versions" }
-        if ($robloxDir) {
-          Write-Host "Roblox installation directory found: $($robloxDir.FullName)"
-        } else {
-          Write-Host "Roblox installation directory not found."
-          exit 1
-        }
-
-    - name: Create Shortcut
-      run: |
-        $robloxPath = Get-ChildItem -Path "$env:LOCALAPPDATA\Roblox\Versions" -Recurse -Filter "RobloxPlayerBeta.exe" | Select-Object -First 1 -ExpandProperty FullName
-        $ws = New-Object -ComObject WScript.Shell
-        $shortcut = $ws.CreateShortcut("$env:USERPROFILE\Desktop\Roblox.lnk")
-        $shortcut.TargetPath = $robloxPath
-        $shortcut.Save()
-
-    - name: Package Files
-      run: Compress-Archive -Path "$env:LOCALAPPDATA\Roblox\Versions\*" -DestinationPath "RobloxSetup.zip"
-
-    - name: Upload ZIP
+    - name: Upload Installer
       uses: actions/upload-artifact@v4
       with:
-        name: roblox-setup
-        path: RobloxSetup.zip
+        name: roblox-installer
+        path: RobloxInstaller.exe
