@@ -4,11 +4,9 @@ on:
   workflow_dispatch:
   repository_dispatch:
     types: [install-roblox]  # Allows frontend to trigger this
-
 jobs:
   download_roblox_installer:
     runs-on: windows-latest
-
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v3
@@ -16,11 +14,16 @@ jobs:
     - name: Download Roblox Installer
       run: Invoke-WebRequest -Uri "https://setup.rbxcdn.com/RobloxPlayerLauncher.exe" -OutFile "RobloxInstaller.exe"
 
-    - name: Upload Installer
-      uses: actions/upload-artifact@v4
-      with:
-        name: roblox-installer
-        path: RobloxInstaller.exe
+    - name: Upload to GitHub Pages
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@github.com"
+        git clone --branch gh-pages https://github.com/${{ github.repository }} gh-pages
+        cp RobloxInstaller.exe gh-pages/
+        cd gh-pages
+        git add RobloxInstaller.exe
+        git commit -m "Add Roblox Installer"
+        git push
 
     - name: Provide Download Link
-      run: echo "Download the Roblox installer from the Artifacts section in the Actions tab."
+      run: echo "Download the Roblox installer from: https://${{ github.repository_owner }}.github.io/${{ github.repository }}/RobloxInstaller.exe"
