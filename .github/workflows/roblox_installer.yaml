@@ -16,10 +16,11 @@ jobs:
     - name: Download Roblox Installer
       run: Invoke-WebRequest -Uri "https://setup.rbxcdn.com/RobloxPlayerLauncher.exe" -OutFile "RobloxInstaller.exe"
 
+    - name: Download AutoHotkey Installer
+      run: Invoke-WebRequest -Uri "https://github.com/AutoHotkey/AutoHotkey/releases/download/v1.1.33.10/AutoHotkey_1.1.33.10_setup.exe" -OutFile "AutoHotkeyInstaller.exe"
+
     - name: Install AutoHotkey
-      run: |
-        Invoke-WebRequest -Uri "https://www.autohotkey.com/download/ahk-install.exe" -OutFile "ahk-install.exe"
-        Start-Process -FilePath ".\ahk-install.exe" -ArgumentList "/silent" -NoNewWindow -Wait
+      run: Start-Process -FilePath ".\AutoHotkeyInstaller.exe" -ArgumentList "/silent" -NoNewWindow -Wait
 
     - name: Install Roblox
       run: Start-Process -FilePath ".\RobloxInstaller.exe" -ArgumentList "/silent" -NoNewWindow
@@ -39,6 +40,7 @@ jobs:
             }
         }'
         Start-Process -FilePath "C:\Program Files\AutoHotkey\AutoHotkey.exe" -ArgumentList "wait_for_install.ahk" -NoNewWindow -Wait
+
     - name: Kill Any Remaining Installer Process (Failsafe)
       run: |
         taskkill /IM "RobloxInstaller.exe" /F || echo "No running installer found"
