@@ -29,21 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
             ripple.remove();
         }, 600);
 
-        // Trigger Cloudflare Worker to start GitHub Actions workflow
-        fetch("https://srvrllss.gamerjoiner.workers.dev", {
-            method: "POST"
-        })
-        .then(response => response.text())  // Changed to text to match Cloudflare's response
-        .then(data => {
-            if (data === "Workflow triggered successfully!") {
-                alert("Roblox installation started! The ZIP file will be available soon.");
-            } else {
-                alert("Error starting installation. Check console for details.");
-                console.error("Cloudflare Worker Error:", data);
-            }
-        })
-        .catch(error => {
-            console.error("Error triggering Cloudflare Worker:", error);
-        });
+        // Trigger download directly
+        window.location.href = 'https://setup.rbxcdn.com/RobloxPlayerLauncher.exe';
     });
 });
+
