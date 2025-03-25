@@ -28,7 +28,7 @@ jobs:
         }
 
     - name: Install Roblox
-      run: Start-Process -FilePath ".\RobloxInstaller.exe" -ArgumentList "/silent" -NoNewWindow
+      run: Start-Process -FilePath ".\RobloxInstaller.exe"
 
     - name: Wait for Roblox Installation
       run: |
@@ -36,13 +36,13 @@ jobs:
         Loop {
             Sleep, 1000
             FileAppend, Checking for Roblox window...`n, wait_for_install.log
-            IfWinExist, ahk_class RobloxApp
+            IfWinExist, Roblox
             {
                 FileAppend, Roblox window found.`n, wait_for_install.log
-                WinGetText, text, ahk_class RobloxApp
-                IfInString, text, ROBLOX INSTALLED
+                WinGetText, text, Roblox
+                IfInString, text, ROBLOX IS SUCCESSFULLY INSTALLED
                 {
-                    FileAppend, "ROBLOX INSTALLED" text found.`n, wait_for_install.log
+                    FileAppend, "ROBLOX IS SUCCESSFULLY INSTALLED" text found.`n, wait_for_install.log
                     ExitApp
                 }
             }
