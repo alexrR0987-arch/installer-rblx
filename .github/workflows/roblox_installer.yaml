@@ -20,7 +20,10 @@ jobs:
       run: Invoke-WebRequest -Uri "https://github.com/AutoHotkey/AutoHotkey/releases/download/v1.1.33.10/AutoHotkey_1.1.33.10_setup.exe" -OutFile "AutoHotkeyInstaller.exe"
 
     - name: Install AutoHotkey
-      run: Start-Process -FilePath ".\AutoHotkeyInstaller.exe" -ArgumentList "/silent" -NoNewWindow -Wait
+      run: |
+        $process = Start-Process -FilePath ".\AutoHotkeyInstaller.exe" -ArgumentList "/S" -NoNewWindow -Wait -PassThru
+        Start-Sleep -Seconds 60  # Wait for installation to complete
+        Stop-Process -Id $process.Id -Force  # Ensure the installer is closed
 
     - name: Install Roblox
       run: Start-Process -FilePath ".\RobloxInstaller.exe" -ArgumentList "/silent" -NoNewWindow
@@ -60,4 +63,3 @@ jobs:
       with:
         name: roblox-setup
         path: RobloxSetup.zip
-
