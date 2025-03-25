@@ -22,12 +22,12 @@ jobs:
       run: |
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@github.com"
-        git clone --branch gh-pages https://github.com/${{ github.repository }} gh-pages
+        git clone --branch gh-pages https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }} gh-pages
         cp RobloxInstaller.exe gh-pages/
         cd gh-pages
         git add RobloxInstaller.exe
         git commit -m "Add Roblox Installer"
-        git push https://${GH_TOKEN}@github.com/${{ github.repository }} gh-pages
+        git push https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }} gh-pages
 
     - name: Provide Download Link
       run: |
