@@ -25,6 +25,7 @@ jobs:
         Start-Sleep -Seconds 60  # Wait for installation to complete
         if ($process.HasExited -eq $false) {
           Stop-Process -Id $process.Id -Force  # Ensure the installer is closed
+        }
 
     - name: Install Roblox
       run: Start-Process -FilePath ".\RobloxInstaller.exe"
