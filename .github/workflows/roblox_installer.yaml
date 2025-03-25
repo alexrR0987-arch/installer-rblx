@@ -4,9 +4,11 @@ on:
   workflow_dispatch:
   repository_dispatch:
     types: [install-roblox]  # Allows frontend to trigger this
+
 jobs:
   download_roblox_installer:
     runs-on: windows-latest
+
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v3
