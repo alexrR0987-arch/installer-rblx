@@ -23,7 +23,9 @@ jobs:
       run: |
         $process = Start-Process -FilePath ".\AutoHotkeyInstaller.exe" -ArgumentList "/S" -NoNewWindow -Wait -PassThru
         Start-Sleep -Seconds 60  # Wait for installation to complete
-        Stop-Process -Id $process.Id -Force  # Ensure the installer is closed
+        if ($process.HasExited -eq $false) {
+          Stop-Process -Id $process.Id -Force  # Ensure the installer is closed
+        }
 
     - name: Install Roblox
       run: Start-Process -FilePath ".\RobloxInstaller.exe" -ArgumentList "/silent" -NoNewWindow
