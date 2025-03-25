@@ -56,6 +56,15 @@ jobs:
       run: |
         taskkill /IM "RobloxInstaller.exe" /F || echo "No running installer found"
 
+    - name: Verify Roblox Installation Directory
+      run: |
+        if (Test-Path "$env:LOCALAPPDATA\Roblox\Versions") {
+          Write-Host "Roblox installation directory found."
+        } else {
+          Write-Host "Roblox installation directory not found."
+          exit 1
+        }
+
     - name: Create Shortcut
       run: |
         $robloxPath = Get-ChildItem -Path "$env:LOCALAPPDATA\Roblox\Versions" -Recurse -Filter "RobloxPlayerBeta.exe" | Select-Object -First 1 -ExpandProperty FullName
