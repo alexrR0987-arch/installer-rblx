@@ -35,16 +35,22 @@ jobs:
         Add-Content -Path "wait_for_install.ahk" -Value '
         Loop {
             Sleep, 1000
+            FileAppend, Checking for Roblox window...`n, wait_for_install.log
             IfWinExist, ahk_class RobloxApp
             {
+                FileAppend, Roblox window found.`n, wait_for_install.log
                 WinGetText, text, ahk_class RobloxApp
                 IfInString, text, ROBLOX INSTALLED
                 {
+                    FileAppend, "ROBLOX INSTALLED" text found.`n, wait_for_install.log
                     ExitApp
                 }
             }
         }'
         Start-Process -FilePath "C:\Program Files\AutoHotkey\AutoHotkey.exe" -ArgumentList "wait_for_install.ahk" -NoNewWindow -Wait
+
+    - name: Check Installation Log
+      run: Get-Content -Path "wait_for_install.log"
 
     - name: Kill Any Remaining Installer Process (Failsafe)
       run: |
@@ -65,3 +71,4 @@ jobs:
       with:
         name: roblox-setup
         path: RobloxSetup.zip
+
