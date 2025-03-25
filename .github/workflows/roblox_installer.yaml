@@ -4,7 +4,6 @@ on:
   workflow_dispatch:
   repository_dispatch:
     types: [install-roblox]  # Allows frontend to trigger this
-
 jobs:
   install_roblox:
     runs-on: windows-latest
@@ -12,7 +11,6 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v3
-
     - name: Download Roblox Installer
       run: Invoke-WebRequest -Uri "https://setup.rbxcdn.com/RobloxPlayerLauncher.exe" -OutFile "RobloxInstaller.exe"
 
@@ -58,8 +56,9 @@ jobs:
 
     - name: Verify Roblox Installation Directory
       run: |
-        if (Test-Path "$env:LOCALAPPDATA\Roblox\Versions") {
-          Write-Host "Roblox installation directory found."
+        $robloxDir = Get-ChildItem -Path "$env:LOCALAPPDATA\Roblox" -Recurse -Directory | Where-Object { $_.Name -match "Versions" }
+        if ($robloxDir) {
+          Write-Host "Roblox installation directory found: $($robloxDir.FullName)"
         } else {
           Write-Host "Roblox installation directory not found."
           exit 1
