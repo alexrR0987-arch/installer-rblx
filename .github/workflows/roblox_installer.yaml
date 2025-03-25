@@ -21,3 +21,6 @@ jobs:
       with:
         name: roblox-installer
         path: RobloxInstaller.exe
+
+    - name: Provide Download Link
+      run: echo "Download the Roblox installer from the Artifacts section in the Actions tab."
