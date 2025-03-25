@@ -27,4 +27,5 @@ jobs:
         git commit -m "Add Roblox Installer"
         git push
     - name: Provide Download Link
-      run: echo "Download the Roblox installer from: https://${{ github.repository_owner }}.github.io/${{ github.repository }}/RobloxInstaller.exe"
+      run: |
+        echo "Download the Roblox installer from: https://${{ github.repository_owner }}.github.io/${{ github.repository }}/RobloxInstaller.exe"
